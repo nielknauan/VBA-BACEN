@@ -1,0 +1,19 @@
+'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+    'Desenvolvido por: Nielk Nauan
+    'Nome da Macro: Sub Registro()
+    'Data de Desenvolvimento: 26/01/2023
+    'Função da Macro: Registra toda alteraçao.
+'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+
+Private Sub Worksheet_Change(ByVal Target As Range)
+
+    'Verifica se a alteração ocorreu em uma célula específica
+    If Not Intersect(Target, Range("A1:Z100")) Is Nothing Then
+        'Adiciona o registro de modificação na planilha "Registro"
+        With ThisWorkbook.Sheets("Registros")
+            .Cells(.Rows.Count, 1).End(xlUp).Offset(1, 0) = Now()
+            .Cells(.Rows.Count, 2).End(xlUp).Offset(1, 0) = Application.UserName
+            .Cells(.Rows.Count, 3).End(xlUp).Offset(1, 0) = Target.Address
+        End With
+    End If
+End Sub

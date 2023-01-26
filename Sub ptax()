@@ -1,0 +1,74 @@
+'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+    'Desenvolvido por: Nielk Nauan
+    'Nome da Macro: Sub ptax()
+    'Data de Desenvolvimento: 12/01/2023
+    'Função da Macro: Extrair informações Bacen.
+'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+
+Sub ptax()
+    ' instalar selenium e chrmedriver
+    Dim driver As New chromedriver
+    Dim texto As String
+    On Error GoTo ErroEncontrado
+    
+    Sheets("Ptax").Select
+    
+       ' Ocultar navegador
+    driver.AddArgument "--headless"
+    
+    ' Abrir navegador
+    driver.Get "https://ptax.bcb.gov.br/ptax_internet/consultaBoletim.do?method=exibeFormularioConsultaBoletim"
+    
+    ' Navegação e selação na pagina com o click
+    driver.FindElementByXPath("/html/body/div/form/table[1]/tbody/tr[2]/td/input[3]").Click
+    driver.FindElementByXPath("/html/body/div/form/div/input").Click
+    driver.FindElementByXPath("/html/body/center[1]/table/tbody/tr[5]/td[2]/a").Click
+    
+    ' extraçao das informaçao apenas a tabela
+    Range("A1").Value = driver.FindElementsByXPath("/html/body/center/table[1]").Text.Item(1)
+    driver.Close
+    
+    ' verificar se é a pagina correta
+    If ActiveSheet.Name <> "interface" Then
+        Sheets("Ptax").Select
+    End If
+    
+     ' arrumar a codiçao das informaçõoes extraidas
+    Range("A2").Select
+    ActiveCell.Formula2R1C1 = "=TEXTSPLIT(R[-1]C,"" "",CHAR(10))"
+
+    Cells.Select
+    Selection.Copy
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Application.CutCopyMode = False
+    Rows("1:1").Select
+    Selection.Delete Shift:=xlUp
+    
+    Rows("1:1").Select
+    Selection.Delete Shift:=xlUp
+    Selection.Delete Shift:=xlUp
+    Rows("12:14").Select
+    Selection.Delete Shift:=xlUp
+    Cells.Select
+    
+     ' selecionar e colocar as informaçõoes
+    Range("A1:E11").Select
+    Selection.Copy
+    
+    Sheets("Bacen").Select
+    Range("M4").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Range("A1").Select
+    
+Exit Sub
+
+' Adicionar código para tratar erros aqui
+ErroEncontrado:
+Sheets("Bacen").Select
+Range("A1").Select
+    MsgBox "Ptax do dia nao foi fechada"
+    
+End Sub
+

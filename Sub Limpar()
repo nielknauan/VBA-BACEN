@@ -1,0 +1,32 @@
+'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+    'Desenvolvido por: Nielk Nauan
+    'Nome da Macro: Sub Limpar()
+    'Data de Desenvolvimento: 26/01/2023
+    'Função da Macro: Limpeza de dados.
+'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+
+Sub Limpar()
+' Excluia as informacoes da aba abertura
+    Sheets("Abertura").Select
+    Cells.Select
+    Selection.ClearContents
+    Range("A1").Select
+ ' Excluia as informacoes da aba Ptax
+    Sheets("Ptax").Select
+    Cells.Select
+    Selection.ClearContents
+    Range("A1").Select
+' Volta para o Menu
+    Sheets("Bacen").Select
+    Range("A1").Select
+    
+    Range("B4:F14").Select
+    Selection.ClearContents
+    
+    Range("M4:Q14").Select
+    Selection.ClearContents
+    
+    Range("A1").Select
+    
+End Sub
+
